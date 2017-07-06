@@ -1,2 +1,10 @@
 #dataset
+*.csv
 *.data
+
+#python
+*.pyc
+
+#others
+secret.py
+
