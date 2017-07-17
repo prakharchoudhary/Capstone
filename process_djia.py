@@ -4,7 +4,7 @@ TODO:
 -> fill in interpolated data for missing dates(eg. sundays, holidays etc.)
 
 """
-
+import sys
 import pandas as pd
 import datetime
 
@@ -56,8 +56,57 @@ def get_all_dates(start_date, end_date):
 
 	return dates
 
+def missing_data(start, end, missing_dates):
+	'''
+	-> pass the two dates between which we wish the data is missing.
+	-> now use the concave function to obtain a list of missing values for each column.
+	-> then group them date-wise to form new fields.
+	-> empty the missing_dates array
+	'''
+	data = []
+	n = len(missing_dates)
+	open_val = concave(df['Open'][start], df['Open'][end], n)
+	close_val = concave(df['Close'][start], df['Close'][end], n)
+	high_val = concave(df['High'][start], df['High'][end], n)
+	low_val = concave(df['Low'][start], df['Low'][end], n)
+
+	for i in range(n):
+		data.append([missing_dates[i], open_val[i], high_val[i], low_val[i], close_val[i]])
+
+	return data
+
 def main():
-	print("Hello!")
+
+	if len(sys.argv)>1:
+		df = load_file(sys.argv[1])
+	else:
+		filename = raw_input("Enter the file path: ")
+		df = load_file(filename)
+	all_dates = get_all_dates(df['Date'][0], df['Date'][len(df['Date'])-1])
+	final_data = []
+	missing_dates = []
+	'''
+	-> if date from complete list is present in raw_file, add the field directly to final_data.
+	-> else make flag and keep adding the dates to missing dates to missing dates list.
+	-> finally once another similar date appears, make flag = 1 and run the concave function to obtain data for each column for all missing dates.
+	-> At last append the new data and write complete data to a new csv.
+	'''
+	for i in range(len(all_dates)):
+		if all_dates[i] in df['Date']:
+			flag = 1
+			final_data.append(df[i])
+		else:
+			flag = 0
+			missing_dates.append(all_dates[i])
+		
+		if flag == 1 and len(missing_dates):
+			total = len(final_data)
+			missing_info = missing_data(final_data[total-2]['Date'], final_data[total-1]['Date'], missing_dates)
+			final_data.append(missing_info)
+			missing_dates = []
+
+	final_df = pd.DataFrame(final_data)
+	final_df.to_csv('./completeData.csv', columns=['Date', 'Open', 'High', 'Low', 'Close'])
 
 if __name__ == '__main__':
 	
