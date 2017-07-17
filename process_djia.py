@@ -9,6 +9,11 @@ import pandas as pd
 import datetime
 
 def load_file(filename):
+	'''
+	-> loads the files
+	-> converts the csv to dataframe
+	-> change the date format to match the one required by get_all_dates() function.
+	'''
 	
 	f = open(filename, "rb")
 	df = pd.read_csv(f)
@@ -22,6 +27,10 @@ def load_file(filename):
 	f.close()
 
 def concave(x, y, n):
+	'''
+	-> for a given initial value x, final value y and n missing values; calculate the data using a concave function.
+	-> The function is (y+preceeding_value)/2
+	'''
 
 	prices = []
 	prices.append(x)
@@ -33,7 +42,10 @@ def concave(x, y, n):
 
 
 def get_all_dates(start_date, end_date):
-	
+	'''
+	-> returns a list of all the dates between two dates passed as strings.
+	'''
+
 	dates = []
 	start_date = datetime.datetime.strptime(start_date, "%Y-%m-%d")
 	end_date = datetime.datetime.strptime(end_date, "%Y-%m-%d")
@@ -44,11 +56,8 @@ def get_all_dates(start_date, end_date):
 
 	return dates
 
-def dates_iter(df):
-
-	l = len(df.Date)
-	all_dates = get_all_dates(df.Date[0], df.Date[l-1])
-
+def main():
+	print("Hello!")
 
 if __name__ == '__main__':
 	
