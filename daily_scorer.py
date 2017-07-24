@@ -1,3 +1,4 @@
+import sys
 import csv
 import pandas as pd
 
@@ -8,8 +9,8 @@ def load_file(filename):
 
 	f = open(filename, 'rb')
 	df = pd.read_csv(f)
-	print(df.head(3))
-	print(df.tail(3))
+	# print(df.head(3))
+	# print(df.tail(3))
 	return df
 
 def score_catcher(df):
@@ -19,23 +20,26 @@ def score_catcher(df):
 	data = []
 	dates = []
 	record = {}
-	for item in df:
+	for index, row in df.iterrows():
+		sys.stdout.write("Working for Date: {}\r".format(str(row['Date'])))
+		sys.stdout.flush()
 		if not len(dates):
-			dates.append(str(item.Date))
+			dates.append(str(row['Date']))
 			pos = 0
 			neg = 0
-		elif len(dates) and item.Date not in dates:
-			dates.append(str(item))
+		elif len(dates) and row['Date'] not in dates:
+			dates.append(str(row))
 			# TODO: call func to calculate net sentiment for the day
-			record = {"Date": dates[len(dates)-1], "sentiment": sentiment}
+			# record = {"Date": dates[len(dates)-1], "sentiment": sentiment}
+			record = {"Date": dates[len(dates)-1], "pos": pos, "neg": neg}	
 			data.append(record) 
 			pos = 0
 			neg = 0
 		
-		if item.Date in dates:
-			if int(item.sentiment) == 1:
+		if row['Date'] in dates:
+			if int(row['sentiment']) == 1:
 				pos += 1
-			elif int(item.sentiment) == 0:
+			elif int(row['sentiment']) == 0:
 				neg += 1
 	return data
 
@@ -45,7 +49,7 @@ def make_file(data):
 	make a csv file for the processed data.
 	'''
 	final_df = pd.DataFrame(data)
-	pd.to_csv("./daily_twitter_sentiment.csv", columns=('Date', 'Sentiment'))
+	pd.to_csv("./daily_twitter_sentiment.csv", columns=('Date', 'Positive', 'Negative'))
 	return
 
 def main():
