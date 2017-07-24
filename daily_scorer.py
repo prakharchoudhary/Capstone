@@ -28,10 +28,11 @@ def score_catcher(df):
 			pos = 0
 			neg = 0
 		elif len(dates) and row['Date'] not in dates:
-			dates.append(str(row))
+			dates.append(str(row['Date']))
 			# TODO: call func to calculate net sentiment for the day
 			# record = {"Date": dates[len(dates)-1], "sentiment": sentiment}
-			record = {"Date": dates[len(dates)-1], "pos": pos, "neg": neg}	
+			record = {"Date": dates[len(dates)-1], "pos": pos, "neg": neg}
+			print record
 			data.append(record) 
 			pos = 0
 			neg = 0
@@ -49,7 +50,7 @@ def make_file(data):
 	make a csv file for the processed data.
 	'''
 	final_df = pd.DataFrame(data)
-	pd.to_csv("./daily_twitter_sentiment.csv", columns=('Date', 'Positive', 'Negative'))
+	final_df.to_csv("./daily_twitter_sentiment.csv")
 	return
 
 def main():
