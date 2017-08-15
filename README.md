@@ -15,7 +15,7 @@ The dataset includes:
 
 ## Scripts
 
-Several Python scripts are available to train the model:
+Some useful python scripts and jupyter notebook that helped me achieve my goals:
 
 * ```missing_record.py```: fills in interpolated data for missing dates(eg. sundays, holidays etc.) in the DJIA dataset
 * ```SentimentAnalysis.ipynb```: Sentiment analysis project to train on kaggleDataset and prepare classifier which can successfully tag the collected tweets. 
