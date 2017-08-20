@@ -10,8 +10,8 @@ This project is a python and scikit learn based implementation of the paper: (ht
 ## Dataset
 
 The dataset includes:
-	1. The DJIA stock data from June 2009 to December 2009. It has Open, Close, High and Low values for each day.
-	2. A collection of 350k tweets between the above mentioned daterange, tagged via a self-written sentiment analysis classifier.
+1. The DJIA stock data from June 2009 to December 2009. It has Open, Close, High and Low values for each day.
+2. A collection of 350k tweets between the above mentioned daterange, tagged via a self-written sentiment analysis classifier.
 
 ## Scripts
 
